@@ -1768,7 +1768,7 @@ color: white;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">image:url(:/up/icons8-up-50 (1).png);
+             <string notr="true">image:url(:/up/icon_button/icons8-up-50 (1).png);
 background-color: rgb(222, 221, 218);</string>
             </property>
             <property name="text">
@@ -1785,7 +1785,7 @@ background-color: rgb(222, 221, 218);</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">image:url(:/down/icons8-down-50.png);
+             <string notr="true">image:url(:/down/icon_button/icons8-down-50.png);
 background-color: rgb(222, 221, 218);</string>
             </property>
             <property name="text">
@@ -1802,7 +1802,7 @@ background-color: rgb(222, 221, 218);</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">image:url(:/right/icons8-right-50.png);
+             <string notr="true">image:url(:/right/icon_button/icons8-right-50.png);
 background-color: rgb(222, 221, 218);
 
 </string>
@@ -1821,7 +1821,7 @@ background-color: rgb(222, 221, 218);
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">image:url(:/left/icons8-left-50.png);
+             <string notr="true">image:url(:/left/icon_button/icons8-left-50.png);
 background-color: rgb(222, 221, 218);</string>
             </property>
             <property name="text">
@@ -1847,7 +1847,7 @@ background-color: rgb(222, 221, 218);</string>
              <item>
               <widget class="QLabel" name="btn_backward">
                <property name="styleSheet">
-                <string notr="true">image:url(:/backward/icons8-backward-32.png);
+                <string notr="true">image:url(:/backward/icon_button/icons8-backward-32.png);
 background-color:(222, 221, 218)</string>
                </property>
                <property name="text">
@@ -1858,7 +1858,7 @@ background-color:(222, 221, 218)</string>
              <item>
               <widget class="QLabel" name="btn_pause">
                <property name="styleSheet">
-                <string notr="true">image:url(:/pause/icons8-pause-50 (1).png);
+                <string notr="true">image:url(:/pause/icon_button/icons8-pause-50 (1).png);
 background-color:(222, 221, 218);</string>
                </property>
                <property name="text">
@@ -1869,7 +1869,7 @@ background-color:(222, 221, 218);</string>
              <item>
               <widget class="QLabel" name="btn_forward">
                <property name="styleSheet">
-                <string notr="true">image:url(:/forward/icons8-forward-64.png);
+                <string notr="true">image:url(:/forward/icon_button/icons8-forward-64.png);
 background-color:(222, 221, 218)</string>
                </property>
                <property name="text">

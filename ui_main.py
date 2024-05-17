@@ -672,19 +672,19 @@ class Ui_Form(object):
         self.line_4.setObjectName("line_4")
         self.btn_up = QtWidgets.QLabel(self.frame_7)
         self.btn_up.setGeometry(QtCore.QRect(130, 320, 41, 41))
-        self.btn_up.setStyleSheet("image:url(:/up/icons8-up-50 (1).png);\n"
+        self.btn_up.setStyleSheet("image:url(:/up/icon_button/icons8-up-50 (1).png);\n"
 "background-color: rgb(222, 221, 218);")
         self.btn_up.setText("")
         self.btn_up.setObjectName("btn_up")
         self.btn_down = QtWidgets.QLabel(self.frame_7)
         self.btn_down.setGeometry(QtCore.QRect(130, 380, 41, 41))
-        self.btn_down.setStyleSheet("image:url(:/down/icons8-down-50.png);\n"
+        self.btn_down.setStyleSheet("image:url(:/down/icon_button/icons8-down-50.png);\n"
 "background-color: rgb(222, 221, 218);")
         self.btn_down.setText("")
         self.btn_down.setObjectName("btn_down")
         self.btn_right = QtWidgets.QLabel(self.frame_7)
         self.btn_right.setGeometry(QtCore.QRect(190, 350, 41, 41))
-        self.btn_right.setStyleSheet("image:url(:/right/icons8-right-50.png);\n"
+        self.btn_right.setStyleSheet("image:url(:/right/icon_button/icons8-right-50.png);\n"
 "background-color: rgb(222, 221, 218);\n"
 "\n"
 "")
@@ -692,7 +692,7 @@ class Ui_Form(object):
         self.btn_right.setObjectName("btn_right")
         self.btn_right_2 = QtWidgets.QLabel(self.frame_7)
         self.btn_right_2.setGeometry(QtCore.QRect(70, 350, 41, 41))
-        self.btn_right_2.setStyleSheet("image:url(:/left/icons8-left-50.png);\n"
+        self.btn_right_2.setStyleSheet("image:url(:/left/icon_button/icons8-left-50.png);\n"
 "background-color: rgb(222, 221, 218);")
         self.btn_right_2.setText("")
         self.btn_right_2.setObjectName("btn_right_2")
@@ -704,19 +704,19 @@ class Ui_Form(object):
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.frame_2)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
         self.btn_backward = QtWidgets.QLabel(self.frame_2)
-        self.btn_backward.setStyleSheet("image:url(:/backward/icons8-backward-32.png);\n"
+        self.btn_backward.setStyleSheet("image:url(:/backward/icon_button/icons8-backward-32.png);\n"
 "background-color:(222, 221, 218)")
         self.btn_backward.setText("")
         self.btn_backward.setObjectName("btn_backward")
         self.horizontalLayout_10.addWidget(self.btn_backward)
         self.btn_pause = QtWidgets.QLabel(self.frame_2)
-        self.btn_pause.setStyleSheet("image:url(:/pause/icons8-pause-50 (1).png);\n"
+        self.btn_pause.setStyleSheet("image:url(:/pause/icon_button/icons8-pause-50 (1).png);\n"
 "background-color:(222, 221, 218);")
         self.btn_pause.setText("")
         self.btn_pause.setObjectName("btn_pause")
         self.horizontalLayout_10.addWidget(self.btn_pause)
         self.btn_forward = QtWidgets.QLabel(self.frame_2)
-        self.btn_forward.setStyleSheet("image:url(:/forward/icons8-forward-64.png);\n"
+        self.btn_forward.setStyleSheet("image:url(:/forward/icon_button/icons8-forward-64.png);\n"
 "background-color:(222, 221, 218)")
         self.btn_forward.setText("")
         self.btn_forward.setObjectName("btn_forward")
