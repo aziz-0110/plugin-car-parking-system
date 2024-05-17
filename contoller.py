@@ -1,23 +1,23 @@
 from src.plugin_interface import PluginInterface
-from src.models.model_apps import Model, ModelApps
-from src.controllers.control_anypoint import AnypointConfig
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QWidget, QMessageBox
+from src.models.model_apps import ModelApps
 from .ui_main import Ui_Form
-from PyQt6 import QtWidgets
 import cv2
 
 
-class Controller(QtWidgets.QWidget):
-    def __init__(self, model: Model):
+# from moildev import Moildev
+
+class Controller(QWidget):
+    def __init__(self, model):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.model = model
-        # self.moildev = None
+        self.moildev = None
         self.model_apps = ModelApps()
-        self.anypoint_config = AnypointConfig(self.ui)
         self.model_apps.update_file_config()
-        self.moildev = Moildev()
-        self.mode = 1
+        # self.moildev = Moildev()
         self.parameter_name = None
         self.img_fisheye = None
         self.img_pano = None
@@ -42,7 +42,7 @@ class Controller(QtWidgets.QWidget):
         self.roll_in_m2 = 0
         self.zoom_in_m2 = 1
         self.pitch_out_m2 = 90
-        self.yaw_out_m2= 0
+        self.yaw_out_m2 = 0
         self.roll_out_m2 = 0
         self.zoom_out_m2 = 1
         self.set_stylesheet()
@@ -62,7 +62,7 @@ class Controller(QtWidgets.QWidget):
         self.ui.vidio_gate_out.setStyleSheet(self.model.style_label())
 
         self.ui.btn_save.setStyleSheet(self.model.style_pushbutton())
-        self.ui.btn_clear.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_stop.setStyleSheet(self.model.style_pushbutton())
         self.ui.btn_start.setStyleSheet(self.model.style_pushbutton())
         self.ui.btn_params_cam.setStyleSheet(self.model.style_pushbutton())
 
@@ -82,7 +82,7 @@ class Controller(QtWidgets.QWidget):
         self.ui.line_2.setStyleSheet(self.model.style_line())
         self.ui.line_6.setStyleSheet(self.model.style_line())
         self.ui.line_4.setStyleSheet(self.model.style_line())
-        self.ui.line_5.setStyleSheet(self.model.style_line())
+        # self.ui.line_5.setStyleSheet(self.model.style_line())
 
         self.ui.frame_14.setMaximumSize(QtCore.QSize(16777215, 23))
         self.ui.frame_mode1.setMaximumSize(QtCore.QSize(16777215, 23))
@@ -122,9 +122,9 @@ class Controller(QtWidgets.QWidget):
         self.ui.spinBox_rotate_2.setValue(0)
 
         # mode 2
-        self.ui.spinBox_alpha_5.setRange(-999,999)
+        self.ui.spinBox_alpha_5.setRange(-999, 999)
         self.ui.spinBox_beta_4.setRange(-999, 999)
-        self.ui.spinBox_x_5.setRange(-999,999)
+        self.ui.spinBox_x_5.setRange(-999, 999)
         self.ui.spinBox_x_6.setRange(1, 100)
         self.ui.spinBox_2.setRange(0, 4)
 
@@ -174,7 +174,7 @@ class Controller(QtWidgets.QWidget):
         self.ui.btn_radio_mode2.toggled.connect(self.change_mode)
 
         self.ui.btn_start.clicked.connect(self.start)
-        self.ui.btn_clear.clicked.connect(self.close)
+        self.ui.btn_stop.clicked.connect(self.close)
 
         self.value_connect_pano()
         self.value_connect_maps_any_m1()
@@ -190,7 +190,7 @@ class Controller(QtWidgets.QWidget):
         self.ui.spinBox_bottom_4.valueChanged.connect(lambda: self.value_change_pano(1))
         self.ui.spinBox_rotate_4.valueChanged.connect(lambda value: self.img_rotate(self.img_pano, value, 3))
 
-# tambahkan value_connect_maps_any_m1
+
     def value_connect_maps_any_m1(self):
         # seperti ini juga bisa, bedanya ini langsung mengambil dinilai dari spinbox
         # self.ui.spinBox_alpha_2.valueChanged.connect(lambda value: self.tes("aa", value))
@@ -198,17 +198,28 @@ class Controller(QtWidgets.QWidget):
         self.ui.spinBox_beta_2_2.valueChanged.connect(lambda: self.value_change_maps_any_m1(1))
         self.ui.spinBox_zoom_2.valueChanged.connect(lambda: self.value_change_maps_any_m1(1))
         self.ui.spinBox_rotate_2.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_in, value, 1))
-
         self.ui.spinBox_alpha_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
         self.ui.spinBox_beta_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
         self.ui.spinBox_zoom_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
         self.ui.spinBox_rotate_3.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_out, value, 2))
 
-# tambahkan value_connect_maps_any_m2
+    def value_connect_maps_any_m2(self):
+        self.ui.spinBox_alpha_5.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_beta_4.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_x_5.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_x_6.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_2.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_in, value, 1))
+
+        # Spinbox mode 2 Gate_out
+        self.ui.spinBox_alpha_6.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_beta_5.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_x_7.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_x_8.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_4.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_out, value, 2))
 
     def change_mode(self):
         if self.ui.btn_radio_mode1.isChecked():
-            self.mode = 1
+            mode = 1
             self.ui.line_2.show()
             self.ui.line_6.show()
             self.ui.frame_23.show()
@@ -221,7 +232,7 @@ class Controller(QtWidgets.QWidget):
             self.ui.frame_mode2.hide()
             self.ui.frame_mode2_2.hide()
         elif self.ui.btn_radio_mode2.isChecked():
-            self.mode = 2
+            mode = 2
             self.ui.line_2.show()
             self.ui.line_6.show()
             self.ui.frame_23.show()
@@ -234,36 +245,21 @@ class Controller(QtWidgets.QWidget):
             self.ui.frame_mode1.hide()
             self.ui.frame_mode1_2.hide()
         else:
-            self.mode = 0
+            mode = 0
             self.ui.frame_24.hide()
             self.ui.frame_25.hide()
             self.ui.frame_23.hide()
 
-# streaming
     def start(self):
         source_type, cam_type, source_media, parameter_name = self.model.select_media_source()
         self.parameter_name = parameter_name
         self.model_apps.set_media_source(source_type, cam_type, source_media, parameter_name)
-
-        if self.mode == 1:
-            self.model_apps.state_recent_view = "AnypointView"
-            self.model_apps.change_anypoint_mode = "mode_1"
-            self.model_apps.set_draw_polygon = True
-            # self.model_apps.update_properties_config_when_change_view_mode()
-            self.model_apps.create_maps_anypoint_mode_1()
-            # self.model_apps.create_recenter_image()
-
-        elif self.mode == 2:
-            self.model_apps.state_recent_view = "AnypointView"
-            self.model_apps.change_anypoint_mode = "mode_2"
-            self.model_apps.set_draw_polygon = True
-            self.model_apps.create_maps_anypoint_mode_2()
-
         self.model_apps.image_result.connect(self.update_label_fisheye)
 
-        # self.model_apps.state_recent_view = "PanoramaView"
-        # self.model_apps.change_panorama_mode = "car"
-        # self.model_apps.create_maps_panorama_car()
+        self.model_apps.state_recent_view = "AnypointView"
+        self.model_apps.change_anypoint_mode = "mode_1"
+        self.model_apps.set_draw_polygon = True
+        self.model_apps.create_maps_anypoint_mode_1()
 
         # informasi
         # self.moildev.show_config_view_in_information()
@@ -273,16 +269,32 @@ class Controller(QtWidgets.QWidget):
         # self.ui.label_info_media_path.setText(media_path)
         # self.ui.label_info_media_type.setText(camera_type)
         # self.ui.label_info_parameter_used.setText(parameter)
-       
+
         if source_type == "Image/Video":
             self.imageResult(parameter_name)
+
+    def imageResult(self, parameter_name):
+        # for gambar
+        # self.update_label_fisheye(self.model_apps.image)
+
+        # pisahkan fungsi vidio dan gambar
+        self.img_fisheye = self.model_apps.image
+        self.img_pano = self.img_fisheye.copy()
+        self.img_gate_in = self.img_fisheye.copy()
+        self.img_gate_out = self.img_fisheye.copy()
+        self.moildev = self.model.connect_to_moildev(parameter_name)
+
+        self.value_change_pano(0)
+        self.anypoint_m1()
+        # self.anypoint_m2()
+
+        self.showImg()
 
     def update_label_fisheye(self, img, scale_content=False):
         # # mode 1
         # self.model_apps.state_recent_view = "AnypointView"
         # self.model_apps.change_anypoint_mode = "mode_1"
         # self.model_apps.set_draw_polygon = True
-        # self.model_apps.update_properties_config_when_change_view_mode()
         # self.model_apps.create_maps_anypoint_mode_1()
         #
         # # mode 2
@@ -310,34 +322,15 @@ class Controller(QtWidgets.QWidget):
 
         self.model.show_image_to_label(self.ui.vidio_fisheye, img, width=280, scale_content=scale_content)
         # a = img.copy()
-        self.model.show_image_to_label(self.ui.vidio_pano, img, 944, scale_content=scale_content)
-        self.model.show_image_to_label(self.ui.vidio_gate_in, img, 480, scale_content=scale_content)
-        self.model.show_image_to_label(self.ui.vidio_gate_out, img, 480, scale_content=scale_content)
-# end streaming
-
-    def imageResult(self, parameter_name):
-        # for gambar
-        # self.update_label_fisheye(self.model_apps.image)
-
-        # pisahkan fungsi vidio dan gambar
-        self.img_fisheye = self.model_apps.image
-        self.img_pano = self.img_fisheye.copy()
-        self.img_gate_in = self.img_fisheye.copy()
-        self.img_gate_out = self.img_fisheye.copy()
-        self.moildev = self.model.connect_to_moildev(parameter_name)
-
-        self.value_change_pano(0)
-        self.anypoint_m1()
-        # self.anypoint_m2()
-
-        self.showImg()
+        self.model.show_image_to_label(self.ui.vidio_pano, img, 1424, scale_content=scale_content)
+        self.model.show_image_to_label(self.ui.vidio_gate_in, img, 720, scale_content=scale_content)
+        self.model.show_image_to_label(self.ui.vidio_gate_out, img, 720, scale_content=scale_content)
 
     def showImg(self):
-        self.model.show_image_to_label(self.ui.vidio_pano, self.img_pano, 944)
-        self.model.show_image_to_label(self.ui.vidio_gate_in, self.img_gate_in, 480)
-        self.model.show_image_to_label(self.ui.vidio_gate_out, self.img_gate_out, 480)
-
-        self.model.show_image_to_label(self.ui.vidio_fisheye, self.img_fisheye, 280)
+        self.model.show_image_to_label(self.ui.vidio_pano, self.img_pano, 1424)
+        self.model.show_image_to_label(self.ui.vidio_gate_in, self.img_gate_in, 720)
+        self.model.show_image_to_label(self.ui.vidio_gate_out, self.img_gate_out, 720)
+        self.model.show_image_to_label(self.ui.vidio_fisheye, self.img_fisheye, 300)
 
     def value_change_pano(self, status=1):
         if status == 1:
@@ -355,15 +348,15 @@ class Controller(QtWidgets.QWidget):
 
         # self.pano_car()
         # alpa max = bisa +/-, alpa = +/-, beta = +/-, left = +/-, right = -, top = -, button = -
-        self.img_pano = self.moildev.panorama_car(self.img_pano, self.pano_alpha_max, self.pano_alpha, self.pano_beta, self.pano_left, self.pano_right, self.pano_top, self.pano_buttom)
+        self.img_pano = self.moildev.panorama_car(self.img_pano, self.pano_alpha_max, self.pano_alpha, self.pano_beta,
+                                                  self.pano_left, self.pano_right, self.pano_top, self.pano_buttom)
         # ganti jgn pake cv2
-        self.img_pano = cv2.resize(self.img_pano, (900,300))
+        self.img_pano = cv2.resize(self.img_pano, (900, 300))
         self.img_rotate(self.img_pano, rotate, 3)
 
         # self.model.show_image_to_label(self.ui.vidio_pano, self.img_pano, 944)
         # self.img_rotate(self.img_pano, rotate, 3)
 
-# value_change_maps_any_m1
     def value_change_maps_any_m1(self, status):
         alpha, beta, zoom = 0, 0, 0
         if status == 1:
@@ -404,12 +397,54 @@ class Controller(QtWidgets.QWidget):
         self.img_gate_out = cv2.remap(self.img_gate_out, x_out, y_out, cv2.INTER_CUBIC)
         self.img_gate_out = self.img_rotate(self.img_gate_out, 2)
 
+    def anypoint_m1(self):
+        # self.img_gate_in = self.moildev.anypoint_mode1(self.img_gate_in, 90, 180, 2)
+        x_in, y_in = self.moildev.maps_anypoint_mode1(self.maps_any_g1_alpha, self.maps_any_g1_beta,
+                                                      self.maps_any_g1_zoom)
+        self.img_gate_in = cv2.remap(self.img_gate_in, x_in, y_in, cv2.INTER_CUBIC)
 
+        x_out, y_out = self.moildev.maps_anypoint_mode1(self.maps_any_g2_alpha, self.maps_any_g2_beta,
+                                                        self.maps_any_g2_zoom)
+        self.img_gate_out = cv2.remap(self.img_gate_out, x_out, y_out, cv2.INTER_CUBIC)
+        self.img_gate_out = self.img_rotate(self.img_gate_out, 2)
 
-# value_change_maps_any_m2
+    def anypoint_m2(self):
+        x_in, y_in = self.moildev.maps_anypoint_mode2(self.pitch_in_m2, self.yaw_in_m2, self.roll_in_m2,
+                                                      self.zoom_in_m2)
+        self.img_gate_in = cv2.remap(self.img_gate_in, x_in, y_in, cv2.INTER_CUBIC)
 
-# anypoint_m2
- 
+        x_out, y_out = self.moildev.maps_anypoint_mode2(self.pitch_out_m2, self.yaw_out_m2, self.roll_out_m2,
+                                                        self.zoom_out_m2)
+        self.img_gate_out = cv2.remap(self.img_gate_in, x_out, y_out, cv2.INTER_CUBIC)
+        self.img_gate_out = self.img_rotate(self.img_gate_out, 2)
+
+    def value_change_any_mode_2(self, status):
+        pitch, yaw, roll, zoom, rotate = [0, 0, 0, 0, 0]
+        img = self.img_fisheye.copy()
+        if status == 1:
+            pitch = self.ui.spinBox_alpha_5.value()
+            yaw = self.ui.spinBox_beta_4.value()
+            roll = self.ui.spinBox_x_5.value()
+            zoom = self.ui.spinBox_x_6.value()
+            rotate = self.ui.spinBox_2.value()
+
+        else:
+            pitch = self.ui.spinBox_alpha_6.value()
+            yaw = self.ui.spinBox_beta_5.value()
+            roll = self.ui.spinBox_x_7.value()
+            zoom = self.ui.spinBox_x_8.value()
+            rotate = self.ui.spinBox_4.value()
+
+        map_x, map_y = self.moildev.maps_anypoint_mode2(pitch, yaw, roll, zoom)
+        img = cv2.remap(img, map_x, map_y, cv2.INTER_CUBIC)
+
+        if status == 1:
+            self.img_gate_in = img
+            self.img_rotate(img, rotate, 1)
+        else:
+            self.img_gate_out = img
+            self.img_rotate(img, rotate, 2)
+
     def close(self):
         self.ui.vidio_fisheye.setText(" ")
         self.ui.vidio_pano.setText(" ")
@@ -436,15 +471,14 @@ class Controller(QtWidgets.QWidget):
         if status == 0:
             return img
         elif status == 1:
-            self.model.show_image_to_label(self.ui.vidio_gate_in, img, 480)
+            self.model.show_image_to_label(self.ui.vidio_gate_in, img, 720)
         elif status == 2:
-            self.model.show_image_to_label(self.ui.vidio_gate_out, img, 480)
+            self.model.show_image_to_label(self.ui.vidio_gate_out, img, 720)
         elif status == 3:
-            self.model.show_image_to_label(self.ui.vidio_pano, img, 944)
+            self.model.show_image_to_label(self.ui.vidio_pano, img, 1424)
 
 
-
-class Percobaan(PluginInterface):
+class ParkingGateSystem(PluginInterface):
     def __init__(self):
         super().__init__()
         self.widget = None
@@ -455,8 +489,7 @@ class Percobaan(PluginInterface):
         return self.widget
 
     def set_icon_apps(self):
-        return "icon.jpeg"
+        return "Car_Parking.jpeg"
 
     def change_stylesheet(self):
         self.widget.set_stylesheet()
-
