@@ -448,7 +448,7 @@ class Percobaan(PluginInterface):
         return self.widget
 
     def set_icon_apps(self):
-        return "icon.jpeg"
+        return "Car_Parking.jpeg"
 
     def change_stylesheet(self):
         self.widget.set_stylesheet()
