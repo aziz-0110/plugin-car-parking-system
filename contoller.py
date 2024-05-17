@@ -227,6 +227,81 @@ class Controller(QtWidgets.QWidget):
             self.ui.frame_25.hide()
             self.ui.frame_23.hide()
 
+# streaming
+    def start(self):
+        source_type, cam_type, source_media, parameter_name = self.model.select_media_source()
+        self.parameter_name = parameter_name
+        self.model_apps.set_media_source(source_type, cam_type, source_media, parameter_name)
+
+        if self.mode == 1:
+            self.model_apps.state_recent_view = "AnypointView"
+            self.model_apps.change_anypoint_mode = "mode_1"
+            self.model_apps.set_draw_polygon = True
+            # self.model_apps.update_properties_config_when_change_view_mode()
+            self.model_apps.create_maps_anypoint_mode_1()
+            # self.model_apps.create_recenter_image()
+
+        elif self.mode == 2:
+            self.model_apps.state_recent_view = "AnypointView"
+            self.model_apps.change_anypoint_mode = "mode_2"
+            self.model_apps.set_draw_polygon = True
+            self.model_apps.create_maps_anypoint_mode_2()
+
+        self.model_apps.image_result.connect(self.update_label_fisheye)
+
+        # self.model_apps.state_recent_view = "PanoramaView"
+        # self.model_apps.change_panorama_mode = "car"
+        # self.model_apps.create_maps_panorama_car()
+
+        # informasi
+        # self.moildev.show_config_view_in_information()
+        # media_path = str(config["Media_path"])
+        # camera_type = str(config["Cam_type"])
+        # parameter = str(config["Parameter_name"])
+        # self.ui.label_info_media_path.setText(media_path)
+        # self.ui.label_info_media_type.setText(camera_type)
+        # self.ui.label_info_parameter_used.setText(parameter)
+       
+        if source_type == "Image/Video":
+            self.imageResult(parameter_name)
+
+    def update_label_fisheye(self, img, scale_content=False):
+        # # mode 1
+        # self.model_apps.state_recent_view = "AnypointView"
+        # self.model_apps.change_anypoint_mode = "mode_1"
+        # self.model_apps.set_draw_polygon = True
+        # self.model_apps.update_properties_config_when_change_view_mode()
+        # self.model_apps.create_maps_anypoint_mode_1()
+        #
+        # # mode 2
+        # self.model_apps.state_recent_view = "AnypointView"
+        # self.model_apps.change_anypoint_mode = "mode_2"
+        # self.model_apps.set_draw_polygon = True
+        # self.model_apps.create_maps_anypoint_mode_2()
+        #
+        # # panorama
+        # self.model_apps.state_recent_view = "PanoramaView"
+        # self.model_apps.change_panorama_mode = "car"
+        # self.model_apps.create_maps_panorama_car()
+
+        # self.img_fisheye = img
+        # self.img_pano = self.img_fisheye.copy()
+        # self.img_gate_in = self.img_fisheye.copy()
+        # self.img_gate_out = self.img_fisheye.copy()
+        # self.moildev = self.model.connect_to_moildev(self.parameter_name)
+
+        # self.value_change_pano(0)
+        # self.anypoint_m1()
+        # # self.anypoint_m2()
+
+        # self.showImg()
+
+        self.model.show_image_to_label(self.ui.vidio_fisheye, img, width=280, scale_content=scale_content)
+        # a = img.copy()
+        self.model.show_image_to_label(self.ui.vidio_pano, img, 944, scale_content=scale_content)
+        self.model.show_image_to_label(self.ui.vidio_gate_in, img, 480, scale_content=scale_content)
+        self.model.show_image_to_label(self.ui.vidio_gate_out, img, 480, scale_content=scale_content)
+# end streaming
 
     def imageResult(self, parameter_name):
         # for gambar
