@@ -192,7 +192,19 @@ class Controller(QtWidgets.QWidget):
 
 # tambahkan value_connect_maps_any_m1
 
-# tambahkan value_connect_maps_any_m2
+     def value_connect_maps_any_m2(self):
+        self.ui.spinBox_alpha_5.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_beta_4.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_x_5.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_x_6.valueChanged.connect(lambda: self.value_change_any_mode_2(1))
+        self.ui.spinBox_2.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_in, value, 1))
+
+        # Spinbox mode 2 Gate_out
+        self.ui.spinBox_alpha_6.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_beta_5.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_x_7.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_x_8.valueChanged.connect(lambda: self.value_change_any_mode_2(2))
+        self.ui.spinBox_4.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_out, value, 2))
 
     def change_mode(self):
         if self.ui.btn_radio_mode1.isChecked():
@@ -355,10 +367,42 @@ class Controller(QtWidgets.QWidget):
 
 # anypoint_m1
 
-# value_change_maps_any_m2
+    def anypoint_m2(self):
+        x_in, y_in = self.moildev.maps_anypoint_mode2(self.pitch_in_m2, self.yaw_in_m2, self.roll_in_m2,
+                                                      self.zoom_in_m2)
+        self.img_gate_in = cv2.remap(self.img_gate_in, x_in, y_in, cv2.INTER_CUBIC)
 
-# anypoint_m2
- 
+        x_out, y_out = self.moildev.maps_anypoint_mode2(self.pitch_out_m2, self.yaw_out_m2, self.roll_out_m2,
+                                                        self.zoom_out_m2)
+        self.img_gate_out = cv2.remap(self.img_gate_in, x_out, y_out, cv2.INTER_CUBIC)
+        self.img_gate_out = self.img_rotate(self.img_gate_out, 2)
+
+     def value_change_any_mode_2(self, status):
+        pitch, yaw, roll, zoom, rotate = [0, 0, 0, 0, 0]
+        img = self.img_fisheye.copy()
+        if status == 1:
+            pitch = self.ui.spinBox_alpha_5.value()
+            yaw = self.ui.spinBox_beta_4.value()
+            roll = self.ui.spinBox_x_5.value()
+            zoom = self.ui.spinBox_x_6.value()
+            rotate = self.ui.spinBox_2.value()
+
+        else:
+            pitch = self.ui.spinBox_alpha_6.value()
+            yaw = self.ui.spinBox_beta_5.value()
+            roll = self.ui.spinBox_x_7.value()
+            zoom = self.ui.spinBox_x_8.value()
+            rotate = self.ui.spinBox_4.value()
+
+        map_x, map_y = self.moildev.maps_anypoint_mode2(pitch, yaw, roll, zoom)
+        img = cv2.remap(img, map_x, map_y, cv2.INTER_CUBIC)
+
+        if status == 1:
+            self.img_gate_in = img
+            self.img_rotate(img, rotate, 1)
+        else:
+            self.img_gate_out = img
+            self.img_rotate(img, rotate, 2)
     def close(self):
         self.ui.vidio_fisheye.setText(" ")
         self.ui.vidio_pano.setText(" ")
@@ -404,7 +448,7 @@ class Percobaan(PluginInterface):
         return self.widget
 
     def set_icon_apps(self):
-        return "icon.jpeg"
+        return "Car_Parking.jpeg"
 
     def change_stylesheet(self):
         self.widget.set_stylesheet()

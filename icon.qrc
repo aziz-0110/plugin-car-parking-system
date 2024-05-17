@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="up">
+    <file>icons8-up-50 (1).png</file>
+  </qresource>
+  <qresource prefix="pause">
+    <file>icons8-pause-50 (1).png</file>
+  </qresource>
+  <qresource prefix="forward">
+    <file>icons8-forward-64.png</file>
+  </qresource>
+  <qresource prefix="backward">
+    <file>icons8-backward-32.png</file>
+  </qresource>
+  <qresource prefix="down">
+    <file>icons8-down-50.png</file>
+  </qresource>
+  <qresource prefix="right">
+    <file>icons8-right-50.png</file>
+  </qresource>
+  <qresource prefix="left">
+    <file>icons8-left-50.png</file>
+  </qresource>
+</RCC>
