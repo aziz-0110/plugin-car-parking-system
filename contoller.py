@@ -191,6 +191,18 @@ class Controller(QtWidgets.QWidget):
         self.ui.spinBox_rotate_4.valueChanged.connect(lambda value: self.img_rotate(self.img_pano, value, 3))
 
 # tambahkan value_connect_maps_any_m1
+    def value_connect_maps_any_m1(self):
+        # seperti ini juga bisa, bedanya ini langsung mengambil dinilai dari spinbox
+        # self.ui.spinBox_alpha_2.valueChanged.connect(lambda value: self.tes("aa", value))
+        self.ui.spinBox_alpha_2.valueChanged.connect(lambda: self.value_change_maps_any_m1(1))
+        self.ui.spinBox_beta_2_2.valueChanged.connect(lambda: self.value_change_maps_any_m1(1))
+        self.ui.spinBox_zoom_2.valueChanged.connect(lambda: self.value_change_maps_any_m1(1))
+        self.ui.spinBox_rotate_2.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_in, value, 1))
+
+        self.ui.spinBox_alpha_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
+        self.ui.spinBox_beta_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
+        self.ui.spinBox_zoom_3.valueChanged.connect(lambda: self.value_change_maps_any_m1(2))
+        self.ui.spinBox_rotate_3.valueChanged.connect(lambda value: self.img_rotate(self.img_gate_out, value, 2))
 
 # tambahkan value_connect_maps_any_m2
 
@@ -352,8 +364,47 @@ class Controller(QtWidgets.QWidget):
         # self.img_rotate(self.img_pano, rotate, 3)
 
 # value_change_maps_any_m1
+    def value_change_maps_any_m1(self, status):
+        alpha, beta, zoom = 0, 0, 0
+        if status == 1:
+            alpha = self.ui.spinBox_alpha_2.value()
+            beta = self.ui.spinBox_beta_2_2.value()
+            zoom = self.ui.spinBox_zoom_2.value()
+            rotate = self.ui.spinBox_rotate_2.value()
+
+            self.img_gate_in = self.img_fisheye.copy()
+        else:
+            alpha = self.ui.spinBox_alpha_3.value()
+            beta = self.ui.spinBox_beta_3.value()
+            zoom = self.ui.spinBox_zoom_3.value()
+            rotate = self.ui.spinBox_rotate_3.value()
+
+            self.img_gate_out = self.img_fisheye.copy()
+
+        # img = self.anypoint_s_m1(alpha, beta, zoom)
+        x_in, y_in = self.moildev.maps_anypoint_mode1(alpha, beta, zoom)
+        img = cv2.remap(self.img_gate_in, x_in, y_in, cv2.INTER_CUBIC)
+
+        if status == 1:
+            self.img_gate_in = img
+            self.img_rotate(img, rotate, 1)
+            # self.model.show_image_to_label(self.ui.vidio_gate_in, img, 480)
+        else:
+            self.img_gate_out = img
+            self.img_rotate(img, rotate, 2)
+            # self.model.show_image_to_label(self.ui.vidio_gate_out, img, 480)
 
 # anypoint_m1
+    def anypoint_m1(self):
+        # self.img_gate_in = self.moildev.anypoint_mode1(self.img_gate_in, 90, 180, 2)
+        x_in, y_in = self.moildev.maps_anypoint_mode1(self.maps_any_g1_alpha, self.maps_any_g1_beta, self.maps_any_g1_zoom)
+        self.img_gate_in = cv2.remap(self.img_gate_in, x_in, y_in, cv2.INTER_CUBIC)
+
+        x_out, y_out = self.moildev.maps_anypoint_mode1(self.maps_any_g2_alpha, self.maps_any_g2_beta, self.maps_any_g2_zoom)
+        self.img_gate_out = cv2.remap(self.img_gate_out, x_out, y_out, cv2.INTER_CUBIC)
+        self.img_gate_out = self.img_rotate(self.img_gate_out, 2)
+
+
 
 # value_change_maps_any_m2
 
